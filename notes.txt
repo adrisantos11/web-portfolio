@@ -1,0 +1,6 @@
+** CREATE SSH KEY TO CLONE PROJECT LOCALLY ** 
+Windows
+- Open terminal and paste 'ssh-keygen' in the user folder.
+- Pass all steps and finish the job.
+- Generate a new SSH Key in Github pasting the content of the id_rsa.pub file.
+- Use SSH option when cloning.
