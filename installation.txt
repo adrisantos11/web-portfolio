@@ -1,0 +1,160 @@
+Create node project with npm init
+Install React and React-DOM in devDependencies with npm install --save-dev react react-dom
+    * React: contains all features of react.
+    * ReactDOM: Needed as entry point to the DOM.
+
+Install babel with the loader and the presets
+npm install --save-dev @babel/core babel-loader @babel/preset-env @babel/preset-react
+Babel is in charge to transpile to JS all the JSX files.
+Cretea config file in the root of the project: .babelrc
+Paste:
+{
+    "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+    ]
+}
+Install webpack and plugins:
+    * webpack
+    * webpack-cli: set of commands for developers to increase speed when setting up a costom webpack project (enables webpack file config)
+    * webpack-dev-server: To serve the application locally
+    * html-webpack-plugin: Simplify HTML to serve bundle.
+npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin
+Create webpack config file in the root of the repository: webpack.config.js
+Paste:
+
+    const path = require("path");
+    const HtmlWebpackPlugin = require("html-webpack-plugin");
+    module.exports = {
+    mode: "development",
+    entry: "./main.jsx",
+    devtool: "inline-source-map",
+    output: {
+        path: path.join(__dirname, "dist"),
+        filename: "bundle.js",
+    },
+    devtool: "inline-source-map",
+    devServer: {
+        static: path.join(__dirname, "dist"),
+    },
+    module: {
+        rules: [
+        {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: "babel-loader",
+        },
+        ],
+    },
+    resolve: {
+        extensions: [".jsx", ".ts", ".js"],
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+        template: "./index.html",
+        }),
+    ],
+    };
+
+Create index.html in the root of the repository
+
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+
+    <body>
+        <div id="root"></div>
+    </body>
+
+    </html>
+
+Create app.jsx in the root of the repository
+
+    import React from 'react';
+    function App() {
+    return (
+    <div>{'react setup from scratch without cra testing ts'}</div>
+    );
+    }
+    export default App;
+
+Create main.jsx which is the entry point where react-DOM is going to render the application in index.html
+
+    import React from "react";
+    import ReactDOM from "react-dom";
+    import App from './app';
+    ReactDOM.render(<App />, document.getElementById('root'));
+
+Update package.json with the serve commands:
+"start": "webpack-dev-server --open --mode development --hot",
+"build": "webpack --mode production"
+Test it using npm start
+
+Install typescript and ts-loader to transcript ts and tsx file to js language.
+npm install --save-dev typescript ts-loader
+
+Create ts configuration file in the root of the repository: tsconfig.json
+And paste:
+    {
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es5",
+        "jsx": "react",
+        "allowJs": true,
+        "moduleResolution": "node"
+        }
+    }
+
+Change in webpack:
+    * Add inside module.rules, another rule to load the tsx files:
+        {
+            test: /\.tsx?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/,
+        }
+    * In resolve.extensions array, change .jsx by .tsx
+
+Add declarative files for react and react-dom
+npm install @types/react @types/react-dom
+
+Change .jsx files to .tsx files and change the imports to:
+import * as React from 'react';
+import * as ReactDOM from 'react-dom'
+
+Change the entry file in the webpack config file to main.tsx
+
+Start the app with 'npm start'
+
+Use Sass, images, fonts, ... in the project:
+    * sass
+    * sass-loader to transpile .scss, .sass to CSS language.
+    * css-loader: interprets @import and url() like import/require
+    * style-loader: inject CSS into the DOM (index.html)
+
+npm install --save-dev css-loader style-loader sass sass-loader
+Add to the webpack file config module.rules:
+
+    {
+        test: /.(sa|sc|c)ss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+    },
+    {
+        test: /\.(png|jpg|git|svg)$/i,
+        type: "asset/inline",
+    },
+    {
+        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        type: "asset/resource",
+    }
+
